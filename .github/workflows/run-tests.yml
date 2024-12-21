@@ -16,7 +16,6 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.12'
-        cache: 'pip'
 
     - name: Install uv
       run: |
@@ -46,10 +45,10 @@ jobs:
         ruff check .
         ruff format --check .
 
-    - name: Run unit tests with coverage
+    - name: Run unit tests
       run: |
         pytest -v -m unit
 
-    - name: Run integration tests with coverage
+    - name: Run integration tests
       run: |
         pytest -v -m integration

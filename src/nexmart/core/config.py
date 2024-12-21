@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from .constants import ModelProvider
+from .constants import AppSettings
 
 
 class Settings(BaseSettings):
@@ -17,15 +17,13 @@ class Settings(BaseSettings):
         cors_origins (List[str]): The allowed origins for CORS.
     """
 
-    app_name: str = "Product Similarity API"
-    model_name: str = f"{ModelProvider.HKUNLP}/{ModelProvider.INSTRUCTOR_BASE}"
+    app_name: str = AppSettings.APP_NAME
+    model_name: str = AppSettings.MODEL_NAME
     debug: bool = False
-    api_version: str = "v1"
-    cors_origins: List[str] = ["*"]
+    api_version: str = AppSettings.API_VERSION
+    cors_origins: List[str] = [AppSettings.CORS_ORIGINS]
 
-    model_config = SettingsConfigDict(
-        env_prefix="APP_", env_file=".env", env_file_encoding="utf-8"
-    )
+    model_config = SettingsConfigDict(env_prefix="APP_", env_file_encoding="utf-8")
 
 
 @lru_cache

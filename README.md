@@ -124,6 +124,10 @@ Tech Stack used:
         ```bash
         $ pytest -v -m integration
         ```
+    - To run all tests together:
+        ```bash
+        $ pytest -v
+        ```
 
 5. Run pre-commit hooks to check the code quality and format the code:
     - Install pre-commit:

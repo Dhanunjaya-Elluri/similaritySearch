@@ -27,3 +27,12 @@ class APIRoutes(StrEnum):
     DOCS = "/docs"
     REDOC = "/redoc"
     OPENAPI = "/openapi.json"
+
+
+class AppSettings(StrEnum):
+    """Enum for application settings."""
+
+    APP_NAME = "Product Similarity API"
+    MODEL_NAME = f"{ModelProvider.HKUNLP}/{ModelProvider.INSTRUCTOR_BASE}"
+    API_VERSION = "v1"
+    CORS_ORIGINS = "*"
