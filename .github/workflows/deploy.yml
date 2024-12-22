@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build and Deploy to Docker Hub
 
 on:
   workflow_run:
