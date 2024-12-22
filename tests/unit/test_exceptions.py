@@ -8,7 +8,7 @@ from pydantic import ValidationError
 
 from nexmart.core.constants import StatusCodes
 from nexmart.core.exceptions import validation_exception_handler
-from tests.conftest import TestModel
+from tests.utils.models import ValidationTestModel
 
 
 @pytest.mark.unit  # type: ignore[misc]
@@ -16,7 +16,7 @@ async def test_validation_exception_handler() -> None:
     """Test validation exception handler."""
     # Create a validation error
     try:
-        TestModel(value=-1)
+        ValidationTestModel(value=-1)
         pytest.fail("Should have raised ValidationError")
     except ValidationError as e:
         # Convert ValidationError to list of dict for RequestValidationError

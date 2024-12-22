@@ -55,10 +55,6 @@ Tech Stack used:
         ```bash
         $ uv pip install -e .
         ```
-    - Also, install the dev and test dependencies:
-        ```bash
-        $ uv pip install -e ".[test,dev]"
-        ```
 
 3. Run the FastAPI server:
 
@@ -116,6 +112,10 @@ Tech Stack used:
 
 
 4. Running the tests:
+    - Install the dev and test dependencies:
+        ```bash
+        $ uv pip install -e ".[test,dev]"
+        ```
     - Unit tests:
         ```bash
         $ pytest -v -m unit
@@ -144,3 +144,16 @@ Tech Stack used:
         ```
 
 ## Run using Docker
+
+Make sure you have Docker installed on your machine.
+
+- Build the Docker image:
+    ```bash
+    $ docker build -t nexMart-api:v0.1.0 .
+    ```
+- Run the Docker image:
+    ```bash
+    $ docker run -d -p 8000:8000 nexMart-api:v0.1.0
+    ```
+
+Wait for the container to start and the FastAPI server to be running. You can test the endpoints as mentioned in the "Run the FastAPI server" section.

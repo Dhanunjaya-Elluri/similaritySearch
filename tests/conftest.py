@@ -5,19 +5,9 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
-from pydantic import BaseModel, Field
 
 from nexmart.main import app
 from nexmart.services.product_similarity import SimilarityService
-
-
-class TestModel(BaseModel):
-    """Test model for validation.
-
-    This model is used in validation error tests.
-    """
-
-    value: int = Field(gt=0, description="Value must be greater than 0")
 
 
 @pytest.fixture  # type: ignore[misc]
