@@ -9,7 +9,7 @@ from ..services.product_similarity import SimilarityService
 from .models import Query, SimilarityResult
 
 logger = get_logger(__name__)
-router = APIRouter(prefix=APIRoutes.API_V1, tags=["Product Similarity"])
+router = APIRouter(prefix=APIRoutes.PREFIX, tags=["Product Similarity"])
 
 
 similarity_service_dependency = Depends(lambda: similarity_service)

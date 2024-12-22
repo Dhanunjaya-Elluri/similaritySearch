@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from .constants import AppSettings
+from .constants import AppDefaults, AppSettings
 
 
 class Settings(BaseSettings):
@@ -19,9 +19,9 @@ class Settings(BaseSettings):
 
     app_name: str = AppSettings.APP_NAME
     model_name: str = AppSettings.MODEL_NAME
-    debug: bool = False
-    api_version: str = AppSettings.API_VERSION
-    cors_origins: List[str] = [AppSettings.CORS_ORIGINS]
+    debug: bool = AppDefaults.DEBUG
+    api_version: str = AppDefaults.API_VERSION
+    cors_origins: List[str] = AppDefaults.CORS_ORIGINS
 
     model_config = SettingsConfigDict(env_prefix="APP_", env_file_encoding="utf-8")
 

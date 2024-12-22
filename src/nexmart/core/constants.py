@@ -1,11 +1,17 @@
-from enum import IntEnum, StrEnum, auto
+from enum import IntEnum, StrEnum
+from typing import Final, List
 
 
 class ModelProvider(StrEnum):
     """Enum for model providers."""
 
-    HKUNLP = auto()
+    HKUNLP = "hkunlp"
     INSTRUCTOR_BASE = "instructor-base"
+
+    @classmethod
+    def get_model_name(cls) -> str:
+        """Get the full model name."""
+        return f"{cls.HKUNLP}/{cls.INSTRUCTOR_BASE}"
 
 
 class StatusCodes(IntEnum):
@@ -21,18 +27,35 @@ class StatusCodes(IntEnum):
 class APIRoutes(StrEnum):
     """Enum for API routes."""
 
-    API_V1 = "/api/v1"
+    PREFIX = "/api/v1"
     HEALTH = "/health"
     SIMILARITY = "/similarity"
     DOCS = "/docs"
     REDOC = "/redoc"
     OPENAPI = "/openapi.json"
 
+    @classmethod
+    def get_health_route(cls) -> str:
+        """Get the health API route."""
+        return cls.PREFIX + cls.HEALTH
+
+    @classmethod
+    def get_similarity_route(cls) -> str:
+        """Get the similarity API route."""
+        return cls.PREFIX + cls.SIMILARITY
+
 
 class AppSettings(StrEnum):
     """Enum for application settings."""
 
     APP_NAME = "Product Similarity API"
-    MODEL_NAME = f"{ModelProvider.HKUNLP}/{ModelProvider.INSTRUCTOR_BASE}"
-    API_VERSION = "v1"
-    CORS_ORIGINS = "*"
+    MODEL_NAME = ModelProvider.get_model_name()
+
+
+# Add type-safe constants for settings
+class AppDefaults:
+    """Default values for application settings."""
+
+    DEBUG: Final[bool] = False
+    CORS_ORIGINS: Final[List[str]] = ["*"]
+    API_VERSION: Final[str] = "v1"

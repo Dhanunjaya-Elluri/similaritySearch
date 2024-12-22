@@ -130,7 +130,7 @@ Tech Stack used:
         ```
 
 5. Run pre-commit hooks to check the code quality and format the code:
-    - Install pre-commit:
+    - First install pre-commit:
         ```bash
         $ uv pip install pre-commit
         ```
@@ -138,7 +138,7 @@ Tech Stack used:
         ```bash
         $ pre-commit install
         ```
-    - Run pre-commit hooks:
+    - Run pre-commit to check the code quality:
         ```bash
         $ pre-commit run --all-files
         ```
@@ -149,11 +149,11 @@ Make sure you have Docker installed on your machine.
 
 - Build the Docker image:
     ```bash
-    $ docker build -t nexMart-api:v0.1.0 .
+    $ docker build -t nexmart-api:latest .
     ```
 - Run the Docker image:
     ```bash
-    $ docker run -d -p 8000:8000 nexMart-api:v0.1.0
+    $ docker run -d -p 8000:8000 nexmart-api:latest
     ```
 
 Wait for the container to start and the FastAPI server to be running. You can test the endpoints as mentioned in the "Run the FastAPI server" section.

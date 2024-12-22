@@ -32,7 +32,6 @@ jobs:
             file: Dockerfile
             push: true
             tags: |
-              ${{ secrets.DOCKERHUB_USERNAME }}/nexmart-api:v0.1.0
               ${{ secrets.DOCKERHUB_USERNAME }}/nexmart-api:${{ github.sha }}
             cache-from: type=gha
             cache-to: type=gha,mode=max
