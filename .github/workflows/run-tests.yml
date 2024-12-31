@@ -36,7 +36,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        uv pip install --no-cache-dir -e ".[test,dev]"
+        uv pip install --no-cache-dir -e ".[test,lint]"
 
     - name: Check formatting with black
       run: |
