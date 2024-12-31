@@ -3,12 +3,12 @@ name: Run Tests
 on:
   push:
     branches: [ master ]
-    paths:
+    paths:  # Run tests when there are changes to src or tests
       - 'src/**'
       - 'tests/**'
   pull_request:
     branches: [ master ]
-    paths:
+    paths:  # Run tests when there are changes to src or tests
       - 'src/**'
       - 'tests/**'
 

@@ -16,7 +16,7 @@ similarity_service_dependency = Depends(lambda: similarity_service)
 
 
 @router.get(APIRoutes.HEALTH)
-async def health_check() -> Dict[str, str]:
+def health_check() -> Dict[str, str]:
     """Health check endpoint.
 
     Returns:
@@ -26,7 +26,7 @@ async def health_check() -> Dict[str, str]:
 
 
 @router.post(APIRoutes.SIMILARITY, response_model=List[SimilarityResult])
-async def get_similarity(
+def get_similarity(
     query: Query,
     service: SimilarityService = similarity_service_dependency,
 ) -> List[SimilarityResult]:

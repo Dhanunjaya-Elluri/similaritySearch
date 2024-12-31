@@ -12,7 +12,7 @@ from nexmart.core.exceptions import validation_exception_handler
 
 
 @pytest.mark.unit  # type: ignore[misc]
-async def test_validation_exception_handler(mock_request: Request) -> None:
+def test_validation_exception_handler(mock_request: Request) -> None:
     """Test validation exception handler processes errors correctly."""
 
     # Create invalid data that should trigger multiple validation errors
@@ -33,7 +33,7 @@ async def test_validation_exception_handler(mock_request: Request) -> None:
         exc = RequestValidationError(errors=errors)
 
     # Test the exception handler
-    response = await validation_exception_handler(mock_request, exc)
+    response = validation_exception_handler(mock_request, exc)
 
     # Test response structure
     assert response.status_code == StatusCodes.BAD_REQUEST

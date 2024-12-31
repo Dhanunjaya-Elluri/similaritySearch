@@ -13,9 +13,18 @@ class ValidationErrorDetail(TypedDict):
     type: str
 
 
-async def validation_exception_handler(
+def validation_exception_handler(
     request: Request, exc: RequestValidationError
 ) -> JSONResponse:
+    """Handle validation exceptions.
+
+    Args:
+        request: The request object.
+        exc: The validation exception.
+
+    Returns:
+        A JSON response with the validation errors.
+    """
     errors: List[ValidationErrorDetail] = []
     for error in exc.errors():
         error_dict: ValidationErrorDetail = {

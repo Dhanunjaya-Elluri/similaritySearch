@@ -27,7 +27,7 @@ def create_app() -> FastAPI:
     app = FastAPI(
         title=settings.app_name,
         description="API for product similarity search",
-        version="1.0.0",
+        version="0.1.0",
         lifespan=lifespan,
         debug=settings.debug,
         docs_url=APIRoutes.API_DOCS,

@@ -27,8 +27,7 @@ def test_health_check(client: TestClient) -> None:
 
 
 @pytest.mark.integration  # type: ignore[misc]
-@pytest.mark.asyncio  # type: ignore[misc]
-async def test_similarity_endpoint_success(client: TestClient) -> None:
+def test_similarity_endpoint_success(client: TestClient) -> None:
     """Test similarity endpoint with valid input."""
     with patch.object(SimilarityService, "find_similar") as mock_find_similar:
         mock_find_similar.return_value = [
@@ -51,8 +50,7 @@ async def test_similarity_endpoint_success(client: TestClient) -> None:
 
 
 @pytest.mark.integration  # type: ignore[misc]
-@pytest.mark.asyncio  # type: ignore[misc]
-async def test_similarity_endpoint_validation_error(client: TestClient) -> None:
+def test_similarity_endpoint_validation_error(client: TestClient) -> None:
     """Test similarity endpoint with invalid input."""
     payload = {
         "text": [],  # Empty text list should fail validation
@@ -70,8 +68,7 @@ async def test_similarity_endpoint_validation_error(client: TestClient) -> None:
 
 
 @pytest.mark.integration  # type: ignore[misc]
-@pytest.mark.asyncio  # type: ignore[misc]
-async def test_similarity_endpoint_model_not_loaded(client: TestClient) -> None:
+def test_similarity_endpoint_model_not_loaded(client: TestClient) -> None:
     """Test similarity endpoint when model is not loaded."""
     with patch("nexmart.main.similarity_service.model", None):
         payload = {
@@ -85,8 +82,7 @@ async def test_similarity_endpoint_model_not_loaded(client: TestClient) -> None:
 
 
 @pytest.mark.integration  # type: ignore[misc]
-@pytest.mark.asyncio  # type: ignore[misc]
-async def test_similarity_endpoint_error_handling(client: TestClient) -> None:
+def test_similarity_endpoint_error_handling(client: TestClient) -> None:
     """Test similarity endpoint error handling."""
     with patch.object(SimilarityService, "find_similar") as mock_find_similar:
         mock_find_similar.side_effect = Exception("Test error")
