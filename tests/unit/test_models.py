@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from src.nexmart.api.models import Query, SimilarityMatch, SimilarityResult
+from nexmart.api.models import Query, SimilarityMatch, SimilarityResult
 
 
 @pytest.mark.unit
@@ -33,10 +33,13 @@ class TestQuery:
             Query(text=["query"], products=["product"], top_k=0)
         assert "top_k must be greater than 0" in str(exc_info.value)
 
-    def test_default_top_k(self) -> None:
-        """Test default value for top_k."""
-        query = Query(text=["query"], products=["product"])
-        assert query.top_k == 2
+    def test_top_k_exceeds_products(self) -> None:
+        """Test validation error for top_k exceeding number of products."""
+        with pytest.raises(ValidationError) as exc_info:
+            Query(text=["query"], products=["product"], top_k=3)
+        assert "top_k (3) cannot be greater than number of products (1)" in str(
+            exc_info.value
+        )
 
 
 @pytest.mark.unit

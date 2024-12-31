@@ -1,17 +1,11 @@
 from enum import IntEnum, StrEnum
-from typing import Final, List
+from typing import Final
 
 
 class ModelProvider(StrEnum):
     """Enum for model providers."""
 
-    HKUNLP = "hkunlp"
-    INSTRUCTOR_BASE = "instructor-base"
-
-    @classmethod
-    def get_model_name(cls) -> str:
-        """Get the full model name."""
-        return f"{cls.HKUNLP}/{cls.INSTRUCTOR_BASE}"
+    MODEL_NAME = "hkunlp/instructor-base"
 
 
 class StatusCodes(IntEnum):
@@ -30,9 +24,7 @@ class APIRoutes(StrEnum):
     PREFIX = "/api/v1"
     HEALTH = "/health"
     SIMILARITY = "/similarity"
-    DOCS = "/docs"
-    REDOC = "/redoc"
-    OPENAPI = "/openapi.json"
+    API_DOCS = "/docs"
 
     @classmethod
     def get_health_route(cls) -> str:
@@ -49,13 +41,10 @@ class AppSettings(StrEnum):
     """Enum for application settings."""
 
     APP_NAME = "Product Similarity API"
-    MODEL_NAME = ModelProvider.get_model_name()
+    MODEL_NAME = ModelProvider.MODEL_NAME
 
 
-# Add type-safe constants for settings
 class AppDefaults:
     """Default values for application settings."""
 
     DEBUG: Final[bool] = False
-    CORS_ORIGINS: Final[List[str]] = ["*"]
-    API_VERSION: Final[str] = "v1"

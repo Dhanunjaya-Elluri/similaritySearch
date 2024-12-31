@@ -6,39 +6,65 @@ from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 from pydantic import ValidationError
 
+from nexmart.api.models import Query
 from nexmart.core.constants import StatusCodes
 from nexmart.core.exceptions import validation_exception_handler
-from tests.utils.models import ValidationTestModel
 
 
 @pytest.mark.unit  # type: ignore[misc]
-async def test_validation_exception_handler() -> None:
-    """Test validation exception handler."""
-    # Create a validation error
+async def test_validation_exception_handler(mock_request: Request) -> None:
+    """Test validation exception handler processes errors correctly."""
+
+    # Create invalid data that should trigger multiple validation errors
+    invalid_data = {
+        "text": [],  # Invalid: empty list
+        "products": [],  # Invalid: empty list
+        "top_k": 0,  # Invalid: must be > 0
+    }
+
+    # Attempt to create Query with invalid data
     try:
-        ValidationTestModel(value=-1)
-        pytest.fail("Should have raised ValidationError")
+        Query(**invalid_data)
+        pytest.fail("Query validation should have failed with invalid data")
     except ValidationError as e:
-        # Convert ValidationError to list of dict for RequestValidationError
         errors: List[Dict[str, Any]] = e.errors()
+        for error in errors:
+            error["loc"] = ("body",) + tuple(error["loc"])
         exc = RequestValidationError(errors=errors)
 
-    # Create a mock request
-    request = Request(
-        scope={"type": "http", "method": "GET", "path": "/", "headers": []}
-    )
+    # Test the exception handler
+    response = await validation_exception_handler(mock_request, exc)
 
-    # Test the handler
-    response = await validation_exception_handler(request, exc)
-
-    # Verify response
+    # Test response structure
     assert response.status_code == StatusCodes.BAD_REQUEST
+    assert response.headers["content-type"] == "application/json"
 
-    # Parse response body
+    # Test error details
     error_detail = json.loads(response.body.decode())["detail"]
     assert isinstance(error_detail, list)
-    assert len(error_detail) == 1
+    assert len(error_detail) == 3  # Should have 3 validation errors
 
-    error = error_detail[0]
-    assert error["loc"] == ["value"]
-    assert error["msg"] == "Input should be greater than 0"
+    # Verify each error has correct structure
+    for error in error_detail:
+        assert set(error.keys()) == {"loc", "msg", "type"}
+        assert isinstance(error["loc"], list)
+        assert isinstance(error["msg"], str)
+        assert isinstance(error["type"], str)
+
+    # Verify specific errors
+    errors_by_field = {error["loc"][-1]: error for error in error_detail}
+
+    # Check text validation
+    text_error = errors_by_field["text"]
+    assert text_error["msg"] == "Value error, text list cannot be empty"
+    assert text_error["type"] == "value_error"
+
+    # Check products validation
+    products_error = errors_by_field["products"]
+    assert products_error["msg"] == "Value error, products list cannot be empty"
+    assert products_error["type"] == "value_error"
+
+    # Check top_k validation
+    top_k_error = errors_by_field["top_k"]
+    assert top_k_error["msg"] == "Value error, top_k must be greater than 0"
+    assert top_k_error["type"] == "value_error"

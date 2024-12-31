@@ -16,7 +16,7 @@ class Query(BaseModel):
     products: List[str] = Field(
         ..., description="List of product descriptions to search in"
     )
-    top_k: int = Field(default=2, description="Number of top matches to return")
+    top_k: int = Field(..., description="Number of top matches to return")
 
     @field_validator("text")  # type: ignore[misc]
     def validate_text(cls, v: List[str]) -> List[str]:
@@ -53,17 +53,27 @@ class Query(BaseModel):
         return v
 
     @field_validator("top_k")  # type: ignore[misc]
-    def validate_top_k(cls, v: int) -> int:
-        """Validate top_k field. Set to 1 if less than 1.
+    def validate_top_k(cls, v: int, values: dict) -> int:
+        """Validate top_k field.
 
         Args:
-            v (int): The top_k value to validate.
+            v (int): The top_k value to validate
+            values (dict): The values dict containing number of products
 
         Returns:
-            int: The validated top_k value.
+            int: The validated top_k value
+
+        Raises:
+            ValueError: If top_k is less than 1 or greater than number of products
         """
         if v < 1:
             raise ValueError("top_k must be greater than 0")
+
+        # Check if top_k exceeds number of products
+        if "products" in values.data and v > len(values.data["products"]):
+            raise ValueError(
+                f"top_k ({v}) cannot be greater than number of products ({len(values.data['products'])})"
+            )
         return v
 
 

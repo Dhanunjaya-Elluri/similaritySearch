@@ -31,14 +31,8 @@ WORKDIR /app
 COPY --from=builder /app/.venv /app/.venv
 COPY --from=builder /app/src/nexmart /app/nexmart
 
-# Create model cache directory
-RUN mkdir -p /app/models
-
 # Set up environment
-ENV PATH="/app/.venv/bin:$PATH" \
-    PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    HF_HOME=/app/models
+ENV PATH="/app/.venv/bin:$PATH"
 
 EXPOSE 8000
 

@@ -30,9 +30,7 @@ def create_app() -> FastAPI:
         version="1.0.0",
         lifespan=lifespan,
         debug=settings.debug,
-        docs_url=APIRoutes.DOCS,
-        redoc_url=APIRoutes.REDOC,
-        openapi_url=APIRoutes.OPENAPI,
+        docs_url=APIRoutes.API_DOCS,
     )
 
     # Add exception handlers

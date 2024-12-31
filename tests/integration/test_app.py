@@ -4,7 +4,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from nexmart.core.constants import APIRoutes
+from nexmart.core.constants import APIRoutes, StatusCodes
 from nexmart.main import create_app
 from nexmart.services.product_similarity import SimilarityService
 
@@ -22,7 +22,7 @@ def test_app_creation() -> None:
 def test_health_check(client: TestClient) -> None:
     """Test health check endpoint."""
     response = client.get(APIRoutes.get_health_route())
-    assert response.status_code == 200
+    assert response.status_code == StatusCodes.OK
     assert response.json() == {"status": "healthy"}
 
 
@@ -43,7 +43,7 @@ async def test_similarity_endpoint_success(client: TestClient) -> None:
             "top_k": 2,
         }
         response = client.post(APIRoutes.get_similarity_route(), json=payload)
-        assert response.status_code == 200
+        assert response.status_code == StatusCodes.OK
         result = response.json()
         assert len(result) == 1
         assert len(result[0]["matches"]) == 2
@@ -60,7 +60,7 @@ async def test_similarity_endpoint_validation_error(client: TestClient) -> None:
         "top_k": 1,
     }
     response = client.post(APIRoutes.get_similarity_route(), json=payload)
-    assert response.status_code == 400
+    assert response.status_code == StatusCodes.BAD_REQUEST
     error_detail = response.json()["detail"]
     assert isinstance(error_detail, list)
     assert len(error_detail) > 0
@@ -80,7 +80,7 @@ async def test_similarity_endpoint_model_not_loaded(client: TestClient) -> None:
             "top_k": 1,
         }
         response = client.post(APIRoutes.get_similarity_route(), json=payload)
-        assert response.status_code == 503
+        assert response.status_code == StatusCodes.SERVICE_UNAVAILABLE
         assert response.json()["detail"] == "Model not loaded"
 
 
@@ -96,29 +96,12 @@ async def test_similarity_endpoint_error_handling(client: TestClient) -> None:
             "top_k": 1,
         }
         response = client.post(APIRoutes.get_similarity_route(), json=payload)
-        assert response.status_code == 500
+        assert response.status_code == StatusCodes.SERVER_ERROR
         assert response.json()["detail"] == "Test error"
 
 
 @pytest.mark.integration  # type: ignore[misc]
 def test_docs_endpoint(client: TestClient) -> None:
     """Test OpenAPI documentation endpoint."""
-    response = client.get(APIRoutes.DOCS)
-    assert response.status_code == 200
-
-
-@pytest.mark.integration  # type: ignore[misc]
-def test_openapi_endpoint(client: TestClient) -> None:
-    """Test OpenAPI schema endpoint."""
-    response = client.get(APIRoutes.OPENAPI)
-    assert response.status_code == 200
-    schema = response.json()
-    assert schema["info"]["title"] == "Product Similarity API"
-    assert "/api/v1/similarity" in schema["paths"]
-
-
-@pytest.mark.integration  # type: ignore[misc]
-def test_redoc_endpoint(client: TestClient) -> None:
-    """Test ReDoc documentation endpoint."""
-    response = client.get(APIRoutes.REDOC)
-    assert response.status_code == 200
+    response = client.get(APIRoutes.API_DOCS)
+    assert response.status_code == StatusCodes.OK

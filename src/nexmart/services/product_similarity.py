@@ -8,7 +8,7 @@ logger = get_logger(__name__)
 
 
 class SimilarityService:
-    """Service for handling similarity operations."""
+    """Service for handling similarity product search operations."""
 
     def __init__(self, model_name: str):
         """Initialize the similarity service.
@@ -16,7 +16,7 @@ class SimilarityService:
         Args:
             model_name (str): The name of the sentence transformer model to load.
         """
-        self.model_name = model_name
+        self.model_name: str = model_name
         self.model: Optional[SentenceTransformer] = None
 
     async def load_model(self) -> None:
