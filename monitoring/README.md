@@ -8,14 +8,16 @@
   - [1. Model Metrics](#1-model-metrics)
     - [1.1. Relevance Score Distribution](#11-relevance-score-distribution)
     - [1.2. False Positives](#12-false-positives)
-    - [1.3. Query Drift](#13-query-drift)
-    - [1.4. Product Embedding Drift](#14-product-embedding-drift)
-  - [2. Performance Metrics](#2-performance-metrics)
-    - [2.1. Response Time (Latency)](#21-response-time-latency)
-    - [2.2. Error Rate](#22-error-rate)
-  - [3. Infrastructure](#3-infrastructure)
-    - [3.1. Monitor the Health of the API](#31-monitor-the-health-of-the-api)
-    - [3.2. Resource Utilization](#32-resource-utilization)
+  - [2. Data Quality](#2-data-quality)
+    - [2.1. Query Drift](#21-query-drift)
+    - [2.2. Product Embedding Drift](#22-product-embedding-drift)
+    - [2.3. Number of input tokens](#23-number-of-input-tokens)
+  - [3. Performance Metrics](#3-performance-metrics)
+    - [3.1. Response Time (Latency)](#31-response-time-latency)
+    - [3.2. Error Rate](#32-error-rate)
+  - [4. Infrastructure](#4-infrastructure)
+    - [4.1. Monitor the Health of the API](#41-monitor-the-health-of-the-api)
+    - [4.2. Resource Utilization](#42-resource-utilization)
   - [4. Implementation Steps](#4-implementation-steps)
     - [4.1. Metrics Collection](#41-metrics-collection)
     - [4.2. Alerting](#42-alerting)
@@ -26,13 +28,14 @@ Machine Learning models in production environment, unlike the traditional softwa
 
 This document outlines the comprehensive monitoring strategy for the Product Similarity API. This monitoring system is mainly split into three main categories:
 - Model metrics
+- Data quality
 - Performance metrics
 - Infrastructure metrics
 
 ## 1. Model Metrics
 
 ### 1.1. Relevance Score Distribution
-Relevance score distribution helps us to understand the model's performance over time. Track the shift in the distribution to detect if the model's performance is degrading.
+Relevance score distribution helps us to understand the model's performance over time. Track the shift in the distribution to detect if the model's performance is degrading. This would help us to decide if further fine-tuning is needed.
 - Use a histogram to visualize the distribution of the relevance scores.
 - Conduct statistical tests like `Chi-square test` or `Kolmogorov-Smirnov test` to detect if the distribution of the relevance scores shifts significantly.
 - Alert if the distribution of the relevance scores shifts significantly.
@@ -42,40 +45,48 @@ False positives are matches that are not relevant to the query. Track the percen
 - Collect user feedback on incorrect product matches
 - Log flagged results and retrain the model to minimize false positives.
 
-### 1.3. Query Drift
+## 2. Data Quality
+
+### 2.1. Query Drift
 Query drift happens when the type of queries change over time and deviate from what the model was trained on. For example, if the model was trained on product descriptions, but the queries start to include non-descriptive queries, the model may return irrelevant results.
 - Track embeddings of incoming queries.
 - Use cosine similarity to measure the similarity between the new query and the past queries.
-- Alert if the average cosine similarity of new queries vs. past queries drops below a threshold (e.g. 0.8).
+- Alert if the average cosine similarity of new queries vs. past queries drops below a threshold (e.g. 0.8). This will help us to decide if the model needs to be fine-tuned.
 
-### 1.4. Product Embedding Drift
+### 2.2. Product Embedding Drift
 
 Product embedding drift occurs when the embeddings of product descriptions change significantly over time. This can happen due to product catalog updates, description modifications, or changes in the embedding model itself.
 - Recompute and compare embeddings of products at regular intervals.
 - Track cosine similarity between old and new embeddings.
-- Trigger drift alerts if similarity drops below a defined threshold (e.g., 0.90).
+- Trigger drift alerts if similarity drops below a defined threshold (e.g., 0.90). This will help us to decide if the model needs to be fine-tuned.
 
-## 2. Performance Metrics
+### 2.3. Number of input tokens
+According to the model `hkunlp/instructor-base`, the maximum number of input tokens is 512.
+- Initially set a threshold of 512 tokens.
+- Log and count the number of times the number of input tokens exceeds 512.
+- Alert if the number of times the number of input tokens exceeds 512 exceeds a threshold (e.g., 100 times). This will help us to decide if the model needs to be fine-tuned or change the embedding model.
 
-### 2.1. Response Time (Latency)
+## 3. Performance Metrics
+
+### 3.1. Response Time (Latency)
 Measure how long the model takes to process the query and return the results. Spikes could indicate resource bottlenecks or inefficient processing.
 - Track latency percentiles like p50, p90, p99 latency.
 - Set thresholds for p95 and p99 (e.g., p95 > 500ms triggers an alert).
 
-### 2.2. Error Rate
+### 3.2. Error Rate
 Track the percentage of requests that result in errors. High error rates could indicate model instability or data issues.
 - Log errors and count failed requests.
 - Calculate error rate as a percentage of total requests.
 - Set thresholds for error rate (e.g., >2% triggers an alert).
 
-## 3. Infrastructure
+## 4. Infrastructure
 
-### 3.1. Monitor the Health of the API
+### 4.1. Monitor the Health of the API
 Continuously monitor the `/health` endpoint to ensure the API is running smoothly.
 - Set up a job to run this check every 5 minutes.
 - Alert if the status code is `5xx`.
 
-### 3.2. Resource Utilization
+### 4.2. Resource Utilization
 Monitor the CPU, memory, and disk usage of the API. This will help us to detect if the application is running out of resources.
 - Alert if any resource is running out of capacity.
 

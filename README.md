@@ -183,6 +183,9 @@ Make sure you have Docker installed on your machine. On the root directory of th
 
 Wait for the container to start and the FastAPI server to be running. You can test the endpoints as mentioned in step 3 under [Project Setup - To run the project locally](#project-setup---to-run-the-project-locally).
 
+> [!NOTE]
+> The Dockerfile is optimized for CPU-only PyTorch. Since the similarity search doesn't require GPU acceleration, we can use the CPU version of PyTorch. This significantly reduced the image size from ~6GB to ~1.5GB and the build time from ~10 minutes to ~2 minutes.
+
 ## CI/CD
 
 This project uses GitHub Actions for continuous integration and deployment. The workflow is split into two parts:
@@ -233,11 +236,10 @@ To evolve this into a full-scale production system, the following enhancements c
 
 ### 1. Model Version Management
 - Implement a model registry service to manage different versions of models. We can use `mlflow` to manage the models.
-- Add version tracking with metadata (training date, performance metrics, dataset version).
+- Add version tracking with metadata (training date, performance metrics, dataset version). Store the model artifacts in a centralized storage place like S3.
 - Support A/B testing between model versions before publishing the new version to production.
 - Enable automated model validation before deployment.
 - Implement rollback mechanisms for model versions.
-- Store model artifacts in cloud storage (e.g. S3).
 
 ### 2. Enhanced Monitoring
 - As described in the [monitoring/README.md](monitoring/README.md) file.
@@ -248,8 +250,8 @@ To evolve this into a full-scale production system, the following enhancements c
 - Enable auto-scaling based on traffic patterns or resource utilization.
 
 ### 4. Security Enhancements
-- Add authentication and authorization to the API.
-- Implement rate limiting.
+- Add authentication and authorization to the API limiting the access within the organization or clients.
+- Implement rate limiting and API monitoring to keep track of the API usage.
 - Add request validation and sanitization.
 - Enable audit logging.
 - Implement secure package updates. Always install the dependencies from the trusted source.
@@ -262,7 +264,7 @@ To evolve this into a full-scale production system, the following enhancements c
 - Implement data retention policies.
 
 ### 6. Operational Features
-- The current deployment just builds the docker image and pushes it to the container registry. Implement a CI/CD pipeline to automate the deployment depending on where we want to deploy the API.
+- The current deployment just builds the docker image and pushes it to the `dockerhub` container registry. Implement a CI/CD pipeline to automate the deployment depending on where we want to deploy the API (e.g. `AWS ECS`).
 - Conduct stress testing to ensure the API can handle high traffic and load.
 - Enable automated backups.
 - Implement disaster recovery procedures.
