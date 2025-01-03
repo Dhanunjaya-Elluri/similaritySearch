@@ -82,11 +82,15 @@ This is a code challenge from nexMart GmbH & Co. KG. The task is to deploy an ML
         ```bash
         $ uv pip install -e .
         ```
+    - Install the test and lint dependencies:
+        ```bash
+        $ uv pip install -e ".[test,lint]"
+        ```
 
 3. Run the FastAPI server:
 
     ```bash
-    $ uvicorn src.nexmart.main:app --reload
+    $ uvicorn nexmart.main:app --reload
     ```
     The server will be running on [http://localhost:8000](http://localhost:8000).
 
@@ -137,10 +141,6 @@ This is a code challenge from nexMart GmbH & Co. KG. The task is to deploy an ML
 
 
 4. Running the tests:
-    - Install the test and lint dependencies:
-        ```bash
-        $ uv pip install -e ".[test,lint]"
-        ```
     - Unit tests:
         ```bash
         $ pytest -v -m unit
