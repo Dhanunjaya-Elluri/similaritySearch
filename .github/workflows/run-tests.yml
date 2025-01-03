@@ -6,11 +6,13 @@ on:
     paths:  # Run tests when there are changes to src or tests
       - 'src/**'
       - 'tests/**'
+      - 'pyproject.toml'
   pull_request:
     branches: [ master ]
     paths:  # Run tests when there are changes to src or tests
       - 'src/**'
       - 'tests/**'
+      - 'pyproject.toml'
 
 jobs:
   lint-and-test:
