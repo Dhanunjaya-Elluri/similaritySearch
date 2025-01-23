@@ -6,8 +6,8 @@ from unittest.mock import MagicMock, patch
 import pytest
 from fastapi.testclient import TestClient
 
-from nexmart.main import app
-from nexmart.services.product_similarity import SimilarityService
+from similarity_search.main import app
+from similarity_search.services.product_similarity import SimilarityService
 
 
 @pytest.fixture  # type: ignore[misc]

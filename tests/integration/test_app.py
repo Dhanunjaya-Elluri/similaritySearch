@@ -4,9 +4,9 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from nexmart.core.constants import APIRoutes, StatusCodes
-from nexmart.main import create_app
-from nexmart.services.product_similarity import SimilarityService
+from similarity_search.core.constants import APIRoutes, StatusCodes
+from similarity_search.main import create_app
+from similarity_search.services.product_similarity import SimilarityService
 
 
 @pytest.mark.integration  # type: ignore[misc]
@@ -70,7 +70,7 @@ def test_similarity_endpoint_validation_error(client: TestClient) -> None:
 @pytest.mark.integration  # type: ignore[misc]
 def test_similarity_endpoint_model_not_loaded(client: TestClient) -> None:
     """Test similarity endpoint when model is not loaded."""
-    with patch("nexmart.main.similarity_service.model", None):
+    with patch("similarity_search.main.similarity_service.model", None):
         payload = {
             "text": ["test query"],
             "products": ["test product"],

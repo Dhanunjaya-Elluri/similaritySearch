@@ -32,6 +32,6 @@ jobs:
             file: Dockerfile
             push: true
             tags: |
-              ${{ secrets.DOCKERHUB_USERNAME }}/nexmart-api:${{ github.sha }}
+              ${{ secrets.DOCKERHUB_USERNAME }}/similarity-search-api:${{ github.sha }}
             cache-from: type=gha
             cache-to: type=gha,mode=max

@@ -6,9 +6,9 @@ from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 from pydantic import ValidationError
 
-from nexmart.api.models import Query
-from nexmart.core.constants import StatusCodes
-from nexmart.core.exceptions import validation_exception_handler
+from similarity_search.api.models import Query
+from similarity_search.core.constants import StatusCodes
+from similarity_search.core.exceptions import validation_exception_handler
 
 
 @pytest.mark.unit  # type: ignore[misc]

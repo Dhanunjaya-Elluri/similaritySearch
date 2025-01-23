@@ -29,11 +29,11 @@ WORKDIR /app
 
 # Copy only necessary files
 COPY --from=builder /app/.venv /app/.venv
-COPY --from=builder /app/src/nexmart /app/nexmart
+COPY --from=builder /app/src/similarity_search /app/similarity_search
 
 # Set up environment
 ENV PATH="/app/.venv/bin:$PATH"
 
 EXPOSE 8000
 
-CMD ["uvicorn", "nexmart.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "similarity_search.main:app", "--host", "0.0.0.0", "--port", "8000"]

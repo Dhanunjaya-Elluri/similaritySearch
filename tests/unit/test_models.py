@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from nexmart.api.models import Query, SimilarityMatch, SimilarityResult
+from similarity_search.api.models import Query, SimilarityMatch, SimilarityResult
 
 
 @pytest.mark.unit

@@ -2,13 +2,13 @@ from unittest.mock import MagicMock, call, patch
 
 import pytest
 
-from nexmart.services.product_similarity import SimilarityService
+from similarity_search.services.product_similarity import SimilarityService
 
 
 @pytest.mark.unit  # type: ignore[misc]
 async def test_model_loading() -> None:
     """Test model loading."""
-    with patch("nexmart.services.product_similarity.SentenceTransformer") as mock:
+    with patch("similarity_search.services.product_similarity.SentenceTransformer") as mock:
         service = SimilarityService("test-model")
         await service.load_model()
         mock.assert_called_once_with("test-model")

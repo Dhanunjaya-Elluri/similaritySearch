@@ -1,11 +1,11 @@
-# nexMart-CodeChallenge
+# Similarity Search API
 
-[![Tests](https://github.com/Dhanunjaya-Elluri/nexMart-CodeChallenge/actions/workflows/run-tests.yml/badge.svg)](https://github.com/Dhanunjaya-Elluri/nexMart-CodeChallenge/actions/workflows/run-tests.yml)
-[![Deploy](https://github.com/Dhanunjaya-Elluri/nexMart-CodeChallenge/actions/workflows/deploy.yml/badge.svg)](https://github.com/Dhanunjaya-Elluri/nexMart-CodeChallenge/actions/workflows/deploy.yml)
+[![Tests](https://github.com/Dhanunjaya-Elluri/similaritySearch/actions/workflows/run-tests.yml/badge.svg)](https://github.com/Dhanunjaya-Elluri/similaritySearch/actions/workflows/run-tests.yml)
+[![Deploy](https://github.com/Dhanunjaya-Elluri/similaritySearch/actions/workflows/deploy.yml/badge.svg)](https://github.com/Dhanunjaya-Elluri/similaritySearch/actions/workflows/deploy.yml)
 
 ## Table of Contents
 
-- [nexMart-CodeChallenge](#nexmart-codechallenge)
+- [Similarity Search API](#similarity-search-api)
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
   - [Project Structure](#project-structure)
@@ -25,7 +25,7 @@
 
 ## Description
 
-This is a code challenge from nexMart GmbH & Co. KG. The task is to deploy an ML model as a REST API in a containerized service with a CI/CD setup. The model is a Sentence Transformer (SBERT) designed to compare product descriptions with any given set of queries, e.g., to find similar products and return the most suitable product descriptions.
+This is a simple project to demonstrate how to deploy an ML model as a REST API in a containerized service with a CI/CD setup. The model is a Sentence Transformer (SBERT) designed to compare product descriptions with any given set of queries, e.g., to find similar products and return the most suitable product descriptions.
 
 **Tech Stack used:**
 
@@ -39,7 +39,7 @@ This is a code challenge from nexMart GmbH & Co. KG. The task is to deploy an ML
 
 ## Project Structure
 
-- `src/nexmart`: The main application code.
+- `src/similarity_search`: The main application code.
 - `monitoring/README.md`: The documentation for monitoring solutions.
 - `tests`: Unit and integration tests.
 - `pyproject.toml`: The project configuration file.
@@ -51,7 +51,7 @@ This is a code challenge from nexMart GmbH & Co. KG. The task is to deploy an ML
 1. Clone the repository. Make sure you have [Git](https://git-scm.com/downloads) installed.
 
    ```bash
-   $ git clone https://github.com/Dhanunjaya-Elluri/nexMart-CodeChallenge.git
+   $ git clone https://github.com/Dhanunjaya-Elluri/similaritySearch.git
    ```
 
 2. Install the dependencies using `uv`.
@@ -90,7 +90,7 @@ This is a code challenge from nexMart GmbH & Co. KG. The task is to deploy an ML
 3. Run the FastAPI server:
 
     ```bash
-    $ uvicorn nexmart.main:app --reload
+    $ uvicorn similarity_search.main:app --reload
     ```
     The server will be running on [http://localhost:8000](http://localhost:8000).
 
@@ -174,11 +174,11 @@ Make sure you have Docker installed on your machine. On the root directory of th
 
 - Build the Docker image:
     ```bash
-    $ docker build -t nexmart-api:latest .
+    $ docker build -t similarity-search-api:latest .
     ```
 - Run the Docker image:
     ```bash
-    $ docker run -d -p 8000:8000 nexmart-api:latest
+    $ docker run -d -p 8000:8000 similarity-search-api:latest
     ```
 
 Wait for the container to start and the FastAPI server to be running. You can test the endpoints as mentioned in step 3 under [Project Setup - To run the project locally](#project-setup---to-run-the-project-locally).
